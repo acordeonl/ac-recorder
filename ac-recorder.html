@@ -1,10 +1,12 @@
 <link rel="import" href="/bower_components/polymer/polymer.html">
+<link rel="import" href="../iron-localstorage/iron-localstorage.html">
 <dom-module id="ac-recorder">
     <template>
         <style>
             :host {
             }
         </style>
+        <iron-localstorage name="alicia_adorada2" value="{{instrumentActivity}}" ></iron-localstorage>
     </template>
     <script>
         Polymer({
@@ -14,12 +16,7 @@
             listeners: {},
             properties: {
                 instrumentActivity:{
-                    type:Array,
-                    value:[]
-                },
-                recording:{
-                    type:Boolean,
-                    value:false
+                    type:Object
                 },
                 recordedTime:{
                     type:Number,
@@ -30,15 +27,33 @@
                     value:0
                 }
             },
-            addActivity: function(time , button){
-                if(this.recording) {
-                    //calculate time
-                    this.instrumentActivity[time] = button ;
-                }
+            startRecording: function(){
+                this.instrumentActivity.recording = [] ;
+                this.lastRecordTime = context.currentTime;
+            },
+            addActivity: function(cmd,button,velocity,channel){
+                var activity ={};
+                activity.cmd = cmd ;
+                activity.time = context.currentTime ;
+                activity.button = button ;
+                activity.channel = channel ;
+                this.instrumentActivity.recording.push(activity) ;
+                console.log("added activity " + activity.cmd + " " +activity.time + " "+ activity.button + " "+  activity.channel);
             },
             saveRecording: function(){
+                var tmp = this.instrumentActivity ;
+                this.instrumentActivity = {} ;
+                this.instrumentActivity = tmp ;
+            },
+            dbug: function(){
+                console.log(this.instrumentActivity );
                 // convert notes to json
                 // uploadjson
+            },
+            ready: function () {
+                Polymer.RenderStatus.afterNextRender(this, function(){
+                    this.instrumentActivity = { recording:[]} ;
+                }) ;
             }
         });
     </script>
