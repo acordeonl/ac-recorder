@@ -6,7 +6,8 @@
             :host {
             }
         </style>
-        <iron-localstorage name="alicia_adorada2" value="{{instrumentActivity}}" ></iron-localstorage>
+        <iron-localstorage name="alicia_adorada3" value="[[instrumentActivity]]" ></iron-localstorage>
+        <iron-localstorage name="alicia_adorada_velocities3" value="[[velocities]]" ></iron-localstorage>
     </template>
     <script>
         Polymer({
@@ -16,6 +17,9 @@
             listeners: {},
             properties: {
                 instrumentActivity:{
+                    type:Object
+                },
+                velocities:{
                     type:Object
                 },
                 recordedTime:{
@@ -31,19 +35,30 @@
                 this.instrumentActivity.recording = [] ;
                 this.lastRecordTime = context.currentTime;
             },
-            addActivity: function(cmd,button,velocity,channel){
+            addInstrumentActivity: function(cmd,button,channel){
                 var activity ={};
                 activity.cmd = cmd ;
-                activity.time = context.currentTime ;
                 activity.button = button ;
                 activity.channel = channel ;
+                activity.time = context.currentTime-this.lastRecordTime ;
                 this.instrumentActivity.recording.push(activity) ;
-                console.log("added activity " + activity.cmd + " " +activity.time + " "+ activity.button + " "+  activity.channel);
+            },
+            addVelocityActivity: function(velocity){
+                var activity = {} ;
+                activity.cmd = "velocity-change" ;
+                activity.value = velocity ;
+                activity.time = context.currentTime-this.lastRecordTime ;
+                this.velocities.velocities.push(activity) ;
+
             },
             saveRecording: function(){
                 var tmp = this.instrumentActivity ;
                 this.instrumentActivity = {} ;
                 this.instrumentActivity = tmp ;
+                var tmpV = this.velocities ;
+                this.velocities = {} ;
+                this.velocities = tmpV ;
+                console.log("saved!");
             },
             dbug: function(){
                 console.log(this.instrumentActivity );
@@ -53,6 +68,7 @@
             ready: function () {
                 Polymer.RenderStatus.afterNextRender(this, function(){
                     this.instrumentActivity = { recording:[]} ;
+                    this.velocities = { velocities:[]} ;
                 }) ;
             }
         });
