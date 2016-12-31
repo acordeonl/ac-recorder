@@ -6,8 +6,8 @@
             :host {
             }
         </style>
-        <iron-localstorage name="alicia_adorada3" value="[[instrumentActivity]]" ></iron-localstorage>
-        <iron-localstorage name="alicia_adorada_velocities3" value="[[velocities]]" ></iron-localstorage>
+        <iron-localstorage name="alicia_adorada2" value="[[instrumentActivity]]" ></iron-localstorage>
+        <iron-localstorage name="alicia_adorada_velocities2" value="[[velocities]]" ></iron-localstorage>
     </template>
     <script>
         Polymer({
@@ -36,6 +36,7 @@
                 this.lastRecordTime = context.currentTime;
             },
             addInstrumentActivity: function(cmd,button,channel){
+                log
                 var activity ={};
                 activity.cmd = cmd ;
                 activity.button = button ;
@@ -58,6 +59,7 @@
                 var tmpV = this.velocities ;
                 this.velocities = {} ;
                 this.velocities = tmpV ;
+                console.log(this.instrumentActivity.recording);
                 console.log("saved!");
             },
             dbug: function(){
