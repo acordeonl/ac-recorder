@@ -6,8 +6,8 @@
             :host {
             }
         </style>
-        <iron-localstorage name="alicia_adorada4" value="[[instrumentActivity]]" ></iron-localstorage>
-        <iron-localstorage name="alicia_adorada_velocities4" value="[[velocities]]" ></iron-localstorage>
+        <iron-localstorage name="alicia_adorada6" value="[[instrumentActivity]]" ></iron-localstorage>
+        <iron-localstorage name="alicia_adorada_velocities6" value="[[velocities]]" ></iron-localstorage>
     </template>
     <script>
         Polymer({
@@ -60,11 +60,6 @@
                 this.velocities = tmpV ;
                 console.log(this.instrumentActivity.recording);
                 console.log("saved!");
-            },
-            dbug: function(){
-                console.log(this.instrumentActivity );
-                // convert notes to json
-                // uploadjson
             },
             ready: function () {
                 Polymer.RenderStatus.afterNextRender(this, function(){
